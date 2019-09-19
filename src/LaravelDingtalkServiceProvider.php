@@ -27,10 +27,8 @@ class LaravelDingtalkServiceProvider extends ServiceProvider
             'appkey' => config('dingtalk.appkey'),
             'appsecret' => config('dingtalk.appsecret'),
         ]);
-    }
 
-    protected function registerRoutes()
-    {
+        // 加载路由
         $this->loadRoutesFrom(__DIR__.'/routes/routes.php');
     }
 
