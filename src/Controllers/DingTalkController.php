@@ -8,7 +8,7 @@ use mradang\LaravelDingtalk\DingTalk\Client as DingTalkClient;
 class DingTalkController extends Controller {
 
     public function config(Request $request) {
-        $validatedData = $this->validate($request, [
+        $validatedData = $request->validate([
             'url' => 'required|string',
             'jsApiList' => 'required|string',
         ]);
