@@ -1,6 +1,6 @@
 <?php
 
-namespace mradang\LumenDingtalk\DingTalk;
+namespace mradang\LaravelDingtalk\DingTalk;
 
 use GuzzleHttp\Client;
 

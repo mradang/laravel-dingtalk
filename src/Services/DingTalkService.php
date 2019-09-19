@@ -1,12 +1,12 @@
 <?php
 
-namespace mradang\LumenDingtalk\Services;
+namespace mradang\LaravelDingtalk\Services;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
-use mradang\LumenDingtalk\DingTalk\Client as DingTalkAppClient;
+use mradang\LaravelDingtalk\DingTalk\Client as DingTalkAppClient;
 
 class DingTalkService {
 
@@ -38,16 +38,16 @@ class DingTalkService {
             if ($row['biz_type'] === 13) { // 员工
                 if ($row['biz_data']) {
                     $data = json_decode($row['biz_data'], true);
-                    event(new \mradang\LumenDingtalk\Events\UserUpdateEvent($data));
+                    event(new \mradang\LaravelDingtalk\Events\UserUpdateEvent($data));
                 } else {
-                    event(new \mradang\LumenDingtalk\Events\UserDeleteEvent($row['biz_id']));
+                    event(new \mradang\LaravelDingtalk\Events\UserDeleteEvent($row['biz_id']));
                 }
             } elseif ($row['biz_type'] === 14) { // 部门
                 if ($row['biz_data']) {
                     $data = json_decode($row['biz_data'], true);
-                    event(new \mradang\LumenDingtalk\Events\DepartmentUpdateEvent($data));
+                    event(new \mradang\LaravelDingtalk\Events\DepartmentUpdateEvent($data));
                 } else {
-                    event(new \mradang\LumenDingtalk\Events\DepartmentDeleteEvent($row['biz_id']));
+                    event(new \mradang\LaravelDingtalk\Events\DepartmentDeleteEvent($row['biz_id']));
                 }
             }
         }

@@ -1,9 +1,9 @@
 <?php
 
-namespace mradang\LumenDingtalk\Controllers;
+namespace mradang\LaravelDingtalk\Controllers;
 
 use Illuminate\Http\Request;
-use mradang\LumenDingtalk\DingTalk\Client as DingTalkClient;
+use mradang\LaravelDingtalk\DingTalk\Client as DingTalkClient;
 
 class DingTalkController extends Controller {
 

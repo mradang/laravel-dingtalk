@@ -1,8 +1,8 @@
 <?php
 
-namespace mradang\LumenDingtalk\Controllers;
+namespace mradang\LaravelDingtalk\Controllers;
 
-use Laravel\Lumen\Routing\Controller as BaseController;
+use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {

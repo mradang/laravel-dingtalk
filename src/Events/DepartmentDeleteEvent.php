@@ -1,6 +1,6 @@
 <?php
 
-namespace mradang\LumenDingtalk\Events;
+namespace mradang\LaravelDingtalk\Events;
 
 class DepartmentDeleteEvent extends Event
 {

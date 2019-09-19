@@ -1,6 +1,6 @@
 <?php
 
-namespace mradang\LumenDingtalk\DingTalk;
+namespace mradang\LaravelDingtalk\DingTalk;
 
 use Illuminate\Support\Facades\Cache;
 

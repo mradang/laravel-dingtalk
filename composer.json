@@ -1,6 +1,6 @@
 {
-    "name": "mradang/lumen-dingtalk",
-    "description": "lumen-dingtalk",
+    "name": "mradang/laravel-dingtalk",
+    "description": "laravel-dingtalk",
     "license": "MIT",
     "authors": [
         {
@@ -13,7 +13,17 @@
     },
     "autoload": {
         "psr-4": {
-            "mradang\\LumenDingtalk\\": "src"
+            "mradang\\LaravelDingtalk\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "mradang\\LaravelDingtalk\\LaravelDingtalkServiceProvider"
+            ],
+            "aliases": {
+                "DingTalk": "\\mradang\\LaravelDingtalk\\DingTalk\\DingTalk"
+            }
         }
     }
 }
