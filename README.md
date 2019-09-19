@@ -27,7 +27,7 @@ SYNC_HOST=http://xxx.xxx.xxx
 
 2. 手动添加钉钉通讯录同步任务
 
-修改 laravel 工程 app\Console\Kernel.php 文件，在 schedule 函数中增加
+修改 Laravel 工程 app\Console\Kernel.php 文件，在 schedule 函数中增加
 ```php
 // 每分钟同步钉钉通讯录数据
 try {
