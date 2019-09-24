@@ -5,6 +5,7 @@ namespace mradang\LaravelDingtalk\Services;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Arr;
 
 use mradang\LaravelDingtalk\DingTalk\Client as DingTalkAppClient;
 
@@ -64,14 +65,14 @@ class DingTalkService {
                 'timestamp' => $last_timestamp,
             ]);
 
-            if (array_get($ret, 'errcode')) {
+            if (Arr::get($ret, 'errcode')) {
                 Log::error(sprintf(
                     '获取通讯录变更记录失败：[%s]%s',
-                    array_get($ret, 'errcode'),
-                    array_get($ret, 'errmsg')
+                    Arr::get($ret, 'errcode'),
+                    Arr::get($ret, 'errmsg')
                 ));
             } else {
-                return array_get($ret, 'result');
+                return Arr::get($ret, 'result');
             }
         } else {
             return false;
@@ -101,15 +102,15 @@ class DingTalkService {
             'corp_secret' => config('dingtalk.sync_secret'),
         ]);
 
-        if (array_get($ret, 'errcode')) {
+        if (Arr::get($ret, 'errcode')) {
             Log::error(sprintf(
                 '获取通讯录同步令牌失败：[%s]%s',
-                array_get($ret, 'errcode'),
-                array_get($ret, 'errmsg')
+                Arr::get($ret, 'errcode'),
+                Arr::get($ret, 'errmsg')
             ));
             return false;
         } else {
-            return array_get($ret, 'result');
+            return Arr::get($ret, 'result');
         }
     }
 
