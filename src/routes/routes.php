@@ -1,7 +1,7 @@
 <?php
 
 Route::group([
-    'prefix' => config('dingtalk.uri'),
+    'prefix' => 'api/dingtalk',
     'namespace' => 'mradang\LaravelDingtalk\Controllers',
 ], function () {
     Route::post('config', 'DingTalkController@config');
