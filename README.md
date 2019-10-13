@@ -18,6 +18,7 @@ DINGTALK_AGENTID=xxxxxxxx
 DINGTALK_APPKEY=xxxxxxxx
 DINGTALK_APPSECRET=xxxxxxxx
 DINGTALK_ALLOW_SITE=http://xx.xx.com/|http://localhost:8080/
+DINGTALK_ROUTE_URI=api/dingtalk
 
 # 通讯录同步接口
 SYNC_CORP_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
