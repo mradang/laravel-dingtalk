@@ -10,14 +10,15 @@ class LaravelDingtalkServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/dingtalk.php', 'dingtalk'
+            __DIR__ . '/../config/dingtalk.php',
+            'dingtalk'
         );
     }
 
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/dingtalk.php' => config_path('dingtalk.php'),
+            __DIR__ . '/../config/dingtalk.php' => config_path('dingtalk.php'),
         ]);
 
         // 初始化钉钉SDK
@@ -29,7 +30,6 @@ class LaravelDingtalkServiceProvider extends ServiceProvider
         ]);
 
         // 加载路由
-        $this->loadRoutesFrom(__DIR__.'/routes/routes.php');
+        $this->loadRoutesFrom(__DIR__ . '/routes/routes.php');
     }
-
 }
