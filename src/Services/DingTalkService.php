@@ -9,9 +9,11 @@ use Illuminate\Support\Arr;
 
 use mradang\LaravelDingtalk\DingTalk\Client as DingTalkAppClient;
 
-class DingTalkService {
+class DingTalkService
+{
 
-    public static function config($url, array $jsApis) {
+    public static function config($url, array $jsApis)
+    {
         $allow_sites = explode('|', config('dingtalk.sites'));
         $base_url = explode('?', $url)[0];
         if (in_array($base_url, $allow_sites)) {
@@ -19,12 +21,14 @@ class DingTalkService {
         }
     }
 
-    public static function setLastSyncTimestamp($timestamp) {
+    public static function setLastSyncTimestamp($timestamp)
+    {
         $cache_name = config('dingtalk.sync_timestamp_cache_name');
         Cache::forever($cache_name, $timestamp);
     }
 
-    public static function sync() {
+    public static function sync()
+    {
         $cache_name = config('dingtalk.sync_timestamp_cache_name');
         $last_timestamp = Cache::get($cache_name, 0);
 
@@ -56,7 +60,8 @@ class DingTalkService {
         Cache::forever($cache_name, $last_timestamp);
     }
 
-    public static function getChangeRecord($last_timestamp) {
+    public static function getChangeRecord($last_timestamp)
+    {
         if ($token = self::getToken()) {
             $url = config('dingtalk.sync_host') . '/api/changeRecord';
 
@@ -79,22 +84,24 @@ class DingTalkService {
         }
     }
 
-    private static function getToken() {
-        $key = __CLASS__.'sync_token';
+    private static function getToken()
+    {
+        $key = __CLASS__ . 'sync_token';
 
         if ($token = Cache::get($key)) {
             return $token;
         }
 
         if ($token = self::getTokenFromAPI()) {
-            Cache::put($key, $token, 7200/60 - 3);
+            Cache::put($key, $token, 7200 - 30);
             return $token;
         } else {
             return false;
         }
     }
 
-    private static function getTokenFromAPI() {
+    private static function getTokenFromAPI()
+    {
         $url = config('dingtalk.sync_host') . '/api/gettoken';
 
         $ret = self::postJson($url, [
@@ -114,7 +121,8 @@ class DingTalkService {
         }
     }
 
-    private static function postJson($url, $params) {
+    private static function postJson($url, $params)
+    {
         $client = new Client();
         $res = $client->request('POST', $url, [
             'verify' => false,
@@ -125,5 +133,4 @@ class DingTalkService {
         $ret = json_decode($body, true);
         return $ret;
     }
-
 }
