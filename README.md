@@ -35,7 +35,7 @@ $schedule
         try {
             \mradang\LaravelDingtalk\Services\DingTalkService::sync();
         } catch (\Exception $e) {
-            info(sprintf('Kernel.schedule 同步钉钉数据失败：%s', $e->getMessage()));
+            logger()->warning(sprintf('Kernel.schedule 同步钉钉数据失败：%s', $e->getMessage()));
         }
     })
     ->everyMinute()
