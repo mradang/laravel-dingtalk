@@ -30,17 +30,17 @@ SYNC_HOST=http://xxx.xxx.xxx
 修改 Laravel 工程 app\Console\Kernel.php 文件，在 schedule 函数中增加
 ```php
 // 每分钟同步钉钉通讯录数据
-try {
-    $schedule
+$schedule
     ->call(function () {
-        \mradang\LaravelDingtalk\Services\DingTalkService::sync();
+        try {
+            \mradang\LaravelDingtalk\Services\DingTalkService::sync();
+        } catch (\Exception $e) {
+            info(sprintf('Kernel.schedule 同步钉钉数据失败：%s', $e->getMessage()));
+        }
     })
     ->everyMinute()
     ->name('DingTalkService::sync')
     ->withoutOverlapping(10);
-} catch (\Exception $e) {
-    L(sprintf('Kernel.schedule 同步钉钉数据失败：%s', $e->getMessage()), 'sys');
-}
 ```
 
 ## 添加的路由
