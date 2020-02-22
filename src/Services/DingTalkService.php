@@ -37,8 +37,14 @@ class DingTalkService
             return;
         }
 
+        // 同一员工或部门有多次变更时，仅使用最新的数据
+        $changes = collect($changes);
+        $changes = $changes->filter(function($row) use ($changes) {
+            $max = $changes->where('biz_id', $row['biz_id'])->max('timestamp');
+            return $row['timestamp'] === $max;
+        });
+
         foreach ($changes as $row) {
-            $last_timestamp = $row['timestamp'];
             if ($row['biz_type'] === 13) { // 员工
                 if ($row['biz_data']) {
                     $data = json_decode($row['biz_data'], true);
@@ -56,7 +62,7 @@ class DingTalkService
             }
         }
 
-        Cache::forever($cache_name, $last_timestamp);
+        Cache::forever($cache_name, $changes->max('timestamp'));
     }
 
     public static function getChangeRecord($last_timestamp)
