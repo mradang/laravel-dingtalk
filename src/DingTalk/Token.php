@@ -4,6 +4,8 @@ namespace mradang\LaravelDingtalk\DingTalk;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use GuzzleHttp\Client;
+use Illuminate\Support\Arr;
 
 class Token extends DingTalk
 {
@@ -20,19 +22,21 @@ class Token extends DingTalk
         if (flock($fp, \LOCK_EX)) {
             $token = Cache::get($key);
             if (empty($token)) {
-                $params = [
-                    'appkey' => parent::$config['appkey'],
-                    'appsecret' => parent::$config['appsecret'],
-                ];
-                $ret = parent::request('/gettoken', 'GET', [
-                    'verify' => false,
-                    'query' => $params,
+                $client = new Client([
+                    'base_uri' => parent::$baseUrl,
                 ]);
-                if ($ret) {
+                $ret = $client->request('GET', '/gettoken', [
+                    'query' => [
+                        'appkey' => parent::$config['appkey'],
+                        'appsecret' => parent::$config['appsecret'],
+                    ],
+                ]);
+                $ret = json_decode($ret->getBody()->getContents(), true);
+                if (Arr::get($ret, 'errcode') == 0) {
                     $token = $ret['access_token'];
-                    Cache::put($key, $token, 7200 / 60 - 2);
+                    Cache::put($key, $token, 7200 - 60);
                 } else {
-                    Log::error('[laravel-dingtalk] ' . parent::error());
+                    Log::error('[laravel-dingtalk] gettoken fail.');
                 }
             }
             flock($fp, \LOCK_UN);
@@ -57,7 +61,7 @@ class Token extends DingTalk
                 $ret = parent::get('/get_jsapi_ticket');
                 if ($ret) {
                     $ticket = $ret['ticket'];
-                    Cache::put($key, $ticket, 7200 / 60 - 2);
+                    Cache::put($key, $ticket, 7200 - 60);
                 } else {
                     Log::error('[laravel-dingtalk] ' . parent::error());
                 }
