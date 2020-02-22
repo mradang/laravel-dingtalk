@@ -2,12 +2,14 @@
 
 namespace mradang\LaravelDingtalk\Controllers;
 
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use mradang\LaravelDingtalk\DingTalk\Client as DingTalkClient;
 
-class DingTalkController extends Controller {
-
-    public function config(Request $request) {
+class DingTalkController extends BaseController
+{
+    public function config(Request $request)
+    {
         $validatedData = $request->validate([
             'url' => 'required|string',
             'jsApiList' => 'required|string',
@@ -21,5 +23,4 @@ class DingTalkController extends Controller {
             return DingTalkClient::config($request->url, $jsApiList);
         }
     }
-
 }

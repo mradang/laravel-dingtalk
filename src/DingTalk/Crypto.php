@@ -2,45 +2,49 @@
 
 namespace mradang\LaravelDingtalk\DingTalk;
 
-use Illuminate\Support\Facades\Cache;
-
-class Crypto extends DingTalk {
-
-    private static function getSignature($timestamp, $nonce, $encrypt_msg) {
+class Crypto extends DingTalk
+{
+    private static function getSignature($timestamp, $nonce, $encrypt_msg)
+    {
         $array = array($encrypt_msg, self::token(), $timestamp, $nonce);
         sort($array, SORT_STRING);
         $str = implode($array);
         return sha1($str);
     }
 
-    public static function getNonceStr($length = 32) {
+    public static function getNonceStr($length = 32)
+    {
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $str = '';
-        for ( $i = 0; $i < $length; $i++ ) {
-            $str .= substr($chars, mt_rand(0, strlen($chars)-1), 1);
+        for ($i = 0; $i < $length; $i++) {
+            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
         }
         return $str;
     }
 
-    private static function suiteKey() {
-        // return 'suite4xxxxxxxxxxxxxxx';
+    private static function suiteKey()
+    {
         return parent::$config['corpid'];
     }
 
-    public static function token () {
+    public static function token()
+    {
         return '123456';
     }
 
-    private static function key() {
+    private static function key()
+    {
         return base64_decode(self::aes_key() . '=');
     }
 
-    public static function aes_key () {
-        return substr(md5(gethostname()).md5(__FILE__.__FUNCTION__), 0, 43);
+    public static function aes_key()
+    {
+        return substr(md5(gethostname()) . md5(__FILE__ . __FUNCTION__), 0, 43);
     }
 
     // 加密
-    public static function encryptMsg($plain, $timeStamp, $nonce) {
+    public static function encryptMsg($plain, $timeStamp, $nonce)
+    {
         $encrypt = self::encrypt($plain, self::suiteKey());
         if ($timeStamp == null) {
             $timeStamp = time();
@@ -54,7 +58,8 @@ class Crypto extends DingTalk {
         ]);
     }
 
-    private static function encrypt($text, $corpid) {
+    private static function encrypt($text, $corpid)
+    {
         // 获得16位随机字符串，填充到明文之前
         $random = self::getNonceStr(16);
         $text = $random . pack("N", strlen($text)) . $text . $corpid;
@@ -65,7 +70,8 @@ class Crypto extends DingTalk {
         return openssl_encrypt($text, 'AES-256-CBC', substr(self::key(), 0, 32), OPENSSL_ZERO_PADDING, $iv);
     }
 
-    private static function encode($text) {
+    private static function encode($text)
+    {
         $text_length = strlen($text);
         $amount_to_pad = 32 - ($text_length % 32);
         if ($amount_to_pad == 0) {
@@ -80,7 +86,8 @@ class Crypto extends DingTalk {
     }
 
     // 解密
-    public static function decryptMsg($signature, $timeStamp, $nonce, $encrypt) {
+    public static function decryptMsg($signature, $timeStamp, $nonce, $encrypt)
+    {
         if ($timeStamp == null) {
             $timeStamp = time();
         }
@@ -91,7 +98,8 @@ class Crypto extends DingTalk {
         return self::decrypt($encrypt, self::suiteKey());
     }
 
-    private static function decrypt($encrypted, $corpid) {
+    private static function decrypt($encrypted, $corpid)
+    {
         $iv = substr(self::key(), 0, 16);
         $decrypted = openssl_decrypt($encrypted, 'AES-256-CBC', substr(self::key(), 0, 32), OPENSSL_ZERO_PADDING, $iv);
         try {
@@ -114,12 +122,12 @@ class Crypto extends DingTalk {
         return $xml_content;
     }
 
-    private static function decode($text) {
+    private static function decode($text)
+    {
         $pad = ord(substr($text, -1));
         if ($pad < 1 || $pad > 32) {
             $pad = 0;
         }
         return substr($text, 0, (strlen($text) - $pad));
     }
-
 }

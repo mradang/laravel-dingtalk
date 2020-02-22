@@ -23,7 +23,7 @@
                 "mradang\\LaravelDingtalk\\LaravelDingtalkServiceProvider"
             ],
             "aliases": {
-                "DingTalk": "\\mradang\\LaravelDingtalk\\DingTalk\\DingTalk"
+                "DingTalk": "mradang\\LaravelDingtalk\\DingTalk\\DingTalk"
             }
         }
     }

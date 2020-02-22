@@ -2,9 +2,10 @@
 
 namespace mradang\LaravelDingtalk\DingTalk;
 
-class Client extends DingTalk {
-
-    public static function config(string $url, array $jsApiList = []) {
+class Client extends DingTalk
+{
+    public static function config(string $url, array $jsApiList = [])
+    {
         $nonceStr = uniqid();
         $timestamp = time();
         $config = [
@@ -18,7 +19,8 @@ class Client extends DingTalk {
         return json_encode($config);
     }
 
-    private static function sign($noncestr, $timestamp, $url) {
+    private static function sign($noncestr, $timestamp, $url)
+    {
         $signArr = [
             'jsapi_ticket' => Token::jsapi_ticket(),
             'noncestr' => $noncestr,
@@ -29,5 +31,4 @@ class Client extends DingTalk {
         $signStr = urldecode(http_build_query($signArr));
         return sha1($signStr);
     }
-
 }

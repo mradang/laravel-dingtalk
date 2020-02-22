@@ -11,7 +11,6 @@ use mradang\LaravelDingtalk\DingTalk\Client as DingTalkAppClient;
 
 class DingTalkService
 {
-
     public static function config($url, array $jsApis)
     {
         $allow_sites = explode('|', config('dingtalk.sites'));

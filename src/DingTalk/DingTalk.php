@@ -4,8 +4,8 @@ namespace mradang\LaravelDingtalk\DingTalk;
 
 use GuzzleHttp\Client;
 
-class DingTalk {
-
+class DingTalk
+{
     protected static $baseUrl = 'https://oapi.dingtalk.com/';
 
     protected static $error = null;
@@ -17,15 +17,18 @@ class DingTalk {
         'appsecret' => '',
     ];
 
-    private function __construct() {
+    private function __construct()
+    {
         // 禁止实例化
     }
 
-    final public static function init($config = []) {
+    final public static function init($config = [])
+    {
         self::$config = array_merge(self::$config, $config);
     }
 
-    final public static function error($msg = null) {
+    final public static function error($msg = null)
+    {
         if (!is_null($msg)) {
             self::$error = $msg;
         } else {
@@ -33,7 +36,8 @@ class DingTalk {
         }
     }
 
-    final public static function request(string $url, string $method, array $params) {
+    final public static function request(string $url, string $method, array $params)
+    {
         $client = new Client([
             'base_uri' => self::$baseUrl,
         ]);
@@ -54,7 +58,8 @@ class DingTalk {
         }
     }
 
-    final public static function get(string $api, array $params = []) {
+    final public static function get(string $api, array $params = [])
+    {
         $params['access_token'] = Token::access_token();
 
         $requestParams = [
@@ -65,7 +70,8 @@ class DingTalk {
         return self::request($api, 'GET', $requestParams);
     }
 
-    final public static function post(string $api, array $params = []) {
+    final public static function post(string $api, array $params = [])
+    {
         $requestParams = [
             'verify' => false,
             'query' => [
@@ -76,5 +82,4 @@ class DingTalk {
 
         return self::request($api, 'POST', $requestParams);
     }
-
 }
