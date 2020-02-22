@@ -30,7 +30,10 @@ class LaravelDingtalkServiceProvider extends ServiceProvider
             ]);
         }
 
-        $this->app->router->group(['prefix' => 'api/dingtalk'], function ($router) {
+        $this->app->router->group([
+            'prefix' => 'api/dingtalk',
+            'namespace' => 'mradang\LaravelDingtalk\Controllers',
+        ], function ($router) {
             $router->post('config', 'DingTalkController@config');
         });
     }
