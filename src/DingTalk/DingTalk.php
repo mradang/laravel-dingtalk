@@ -3,6 +3,7 @@
 namespace mradang\LaravelDingtalk\DingTalk;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Arr;
 
 class DingTalk
 {
@@ -42,8 +43,10 @@ class DingTalk
             'base_uri' => self::$baseUrl,
         ]);
 
+        Arr::set($params, 'query.access_token', Token::access_token());
+
         $res = $client->request($method, $url, $params);
-        $result = $res->getBody();
+        $result = $res->getBody()->getContents();
 
         if ($result) {
             $result = json_decode($result, true);
@@ -60,26 +63,17 @@ class DingTalk
 
     final public static function get(string $api, array $params = [])
     {
-        $params['access_token'] = Token::access_token();
-
         $requestParams = [
-            'verify' => false,
             'query' => $params,
         ];
-
         return self::request($api, 'GET', $requestParams);
     }
 
     final public static function post(string $api, array $params = [])
     {
         $requestParams = [
-            'verify' => false,
-            'query' => [
-                'access_token' => Token::access_token()
-            ],
             'json' => $params ?: null,
         ];
-
         return self::request($api, 'POST', $requestParams);
     }
 }
