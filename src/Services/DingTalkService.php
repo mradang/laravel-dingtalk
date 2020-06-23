@@ -40,8 +40,8 @@ class DingTalkService
         // 同一员工或部门有多次变更时，仅使用最新的数据
         $changes = collect($changes);
         $changes = $changes->filter(function($row) use ($changes) {
-            $max = $changes->where('biz_id', $row['biz_id'])->max('timestamp');
-            return $row['timestamp'] === $max;
+            $max = $changes->where('biz_id', $row['biz_id'])->max('id');
+            return $row['id'] === $max;
         });
 
         foreach ($changes as $row) {
