@@ -2,9 +2,6 @@
 
 封装钉钉接口，处理钉钉事件订阅，触发事件
 
-## 依赖
-- guzzlehttp/guzzle
-
 ## 安装
 ```
 composer require mradang/laravel-dingtalk
