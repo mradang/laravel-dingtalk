@@ -2,17 +2,17 @@
 
 namespace mradang\LaravelDingtalk\Events;
 
-class UserUpdateEvent extends Event
+class UserModifyEvent extends Event
 {
-    public $user;
+    public $userid;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(array $user)
+    public function __construct(string $userid)
     {
-        $this->user = $user;
+        $this->userid = $userid;
     }
 }

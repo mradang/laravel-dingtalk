@@ -16,6 +16,8 @@ class DingTalk
         'agentid' => '',
         'appkey' => '',
         'appsecret' => '',
+        'aes_key' => '',
+        'token' => '',
     ];
 
     private function __construct()

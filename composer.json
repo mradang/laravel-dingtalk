@@ -9,7 +9,6 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "~6.3||~7.1",
         "laravel/framework": "~6.0||~7.0||~8.0"
     },
     "autoload": {

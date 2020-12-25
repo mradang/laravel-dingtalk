@@ -2,17 +2,17 @@
 
 namespace mradang\LaravelDingtalk\Events;
 
-class DepartmentDeleteEvent extends Event
+class UserLeaveEvent extends Event
 {
-    public $deptid;
+    public $userid;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($deptid)
+    public function __construct(string $userid)
     {
-        $this->deptid = $deptid;
+        $this->userid = $userid;
     }
 }

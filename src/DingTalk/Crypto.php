@@ -24,12 +24,12 @@ class Crypto extends DingTalk
 
     private static function suiteKey()
     {
-        return parent::$config['corpid'];
+        return parent::$config['appkey'];
     }
 
     public static function token()
     {
-        return '123456';
+        return parent::$config['token'];
     }
 
     private static function key()
@@ -39,7 +39,7 @@ class Crypto extends DingTalk
 
     public static function aes_key()
     {
-        return substr(md5(gethostname()) . md5(__FILE__ . __FUNCTION__), 0, 43);
+        return parent::$config['aes_key'];
     }
 
     // 加密

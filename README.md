@@ -1,6 +1,6 @@
 # Laravel Dingtalk
 
-封装钉钉接口，整合自建钉钉通讯录同步接口，触发员工和部门数据变更事件
+封装钉钉接口，处理钉钉事件订阅，触发事件
 
 ## 依赖
 - guzzlehttp/guzzle
@@ -11,50 +11,34 @@ composer require mradang/laravel-dingtalk
 ```
 
 ## 配置
-1. 添加 .env 环境变量，使用默认值时可省略
+1. 添加 .env 环境变量
 ```
 DINGTALK_CORPID=dingxxxxxxx
 DINGTALK_AGENTID=xxxxxxxx
 DINGTALK_APPKEY=xxxxxxxx
 DINGTALK_APPSECRET=xxxxxxxx
 DINGTALK_ALLOW_SITE=http://xx.xx.com/|http://localhost:8080/
-
-# 通讯录同步接口
-SYNC_CORP_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-SYNC_CORP_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-SYNC_HOST=http://xxx.xxx.xxx
-```
-
-2. 手动添加钉钉通讯录同步任务
-
-修改 Laravel 工程 app\Console\Kernel.php 文件，在 schedule 函数中增加
-```php
-// 每分钟同步钉钉通讯录数据
-$schedule
-    ->call(function () {
-        try {
-            \mradang\LaravelDingtalk\Services\DingTalkService::sync();
-        } catch (\Exception $e) {
-            logger()->warning(sprintf('Kernel.schedule 同步钉钉数据失败：%s', $e->getMessage()));
-        }
-    })
-    ->everyMinute()
-    ->name('DingTalkService::sync')
-    ->withoutOverlapping(10);
+DINGTALK_CALLBACK_AES_KEY=xxxxxxxx
+DINGTALK_CALLBACK_TOKEN=xxxxxxxx
 ```
 
 ## 添加的路由
 - post /api/dingtalk/config
+- post /api/dingtalk/callback
 
 ## 添加的事件
-- mradang\LaravelDingtalk\Events\UserUpdateEvent
-> array $user
-- mradang\LaravelDingtalk\Events\UserDeleteEvent
-> string $userid
-- mradang\LaravelDingtalk\Events\DepartmentUpdateEvent
-> array $dept
-- mradang\LaravelDingtalk\Events\DepartmentDeleteEvent
+- mradang\LaravelDingtalk\Events\DepartmentCreateEvent
 > string $deptid
+- mradang\LaravelDingtalk\Events\DepartmentModifyEvent
+> string $deptid
+- mradang\LaravelDingtalk\Events\DepartmentRemoveEvent
+> string $deptid
+- mradang\LaravelDingtalk\Events\UserAddEvent
+> string $userid
+- mradang\LaravelDingtalk\Events\UserLeaveEvent
+> string $userid
+- mradang\LaravelDingtalk\Events\UserModifyEvent
+> string $userid
 
 ## 钉钉接口调用示例
 
