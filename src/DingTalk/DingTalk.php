@@ -18,6 +18,7 @@ class DingTalk
         'appsecret' => '',
         'aes_key' => '',
         'token' => '',
+        'proxy' => '',
     ];
 
     private function __construct()
@@ -46,6 +47,10 @@ class DingTalk
         ]);
 
         Arr::set($params, 'query.access_token', Token::access_token());
+
+        if (self::$config['proxy']) {
+            $params['proxy'] = self::$config['proxy'];
+        }
 
         $res = $client->request($method, $url, $params);
         $result = $res->getBody()->getContents();

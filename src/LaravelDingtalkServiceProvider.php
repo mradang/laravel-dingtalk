@@ -22,6 +22,7 @@ class LaravelDingtalkServiceProvider extends ServiceProvider
             'appsecret' => config('dingtalk.appsecret'),
             'aes_key' => config('dingtalk.aes_key'),
             'token' => config('dingtalk.token'),
+            'proxy' => config('dingtalk.proxy'),
         ]);
     }
 

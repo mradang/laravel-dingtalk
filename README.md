@@ -17,6 +17,7 @@ DINGTALK_APPSECRET=xxxxxxxx
 DINGTALK_ALLOW_SITE=http://xx.xx.com/|http://localhost:8080/
 DINGTALK_CALLBACK_AES_KEY=xxxxxxxx
 DINGTALK_CALLBACK_TOKEN=xxxxxxxx
+DINGTALK_PROXY=http://addr:port
 ```
 
 ## 添加的路由
