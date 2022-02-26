@@ -1,6 +1,6 @@
 <?php
 
-namespace mradang\LaravelDingtalk\Events;
+namespace mradang\LaravelDingTalk\Events;
 
 use Illuminate\Queue\SerializesModels;
 

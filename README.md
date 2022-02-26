@@ -25,17 +25,17 @@ DINGTALK_PROXY=http://addr:port
 - post /api/dingtalk/callback
 
 ## 添加的事件
-- mradang\LaravelDingtalk\Events\DepartmentCreateEvent
+- mradang\LaravelDingTalk\Events\DepartmentCreateEvent
 > string $deptid
-- mradang\LaravelDingtalk\Events\DepartmentModifyEvent
+- mradang\LaravelDingTalk\Events\DepartmentModifyEvent
 > string $deptid
-- mradang\LaravelDingtalk\Events\DepartmentRemoveEvent
+- mradang\LaravelDingTalk\Events\DepartmentRemoveEvent
 > string $deptid
-- mradang\LaravelDingtalk\Events\UserAddEvent
+- mradang\LaravelDingTalk\Events\UserAddEvent
 > string $userid
-- mradang\LaravelDingtalk\Events\UserLeaveEvent
+- mradang\LaravelDingTalk\Events\UserLeaveEvent
 > string $userid
-- mradang\LaravelDingtalk\Events\UserModifyEvent
+- mradang\LaravelDingTalk\Events\UserModifyEvent
 > string $userid
 
 ## 钉钉接口调用示例

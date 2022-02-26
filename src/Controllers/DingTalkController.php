@@ -1,12 +1,12 @@
 <?php
 
-namespace mradang\LaravelDingtalk\Controllers;
+namespace mradang\LaravelDingTalk\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
-use mradang\LaravelDingtalk\Services\CryptoService;
-use mradang\LaravelDingtalk\Services\DingTalkService;
-use mradang\LaravelDingtalk\Services\EventService;
+use mradang\LaravelDingTalk\Services\CryptoService;
+use mradang\LaravelDingTalk\Services\DingTalkService;
+use mradang\LaravelDingTalk\Services\EventService;
 
 class DingTalkController extends BaseController
 {

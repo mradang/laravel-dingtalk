@@ -1,6 +1,6 @@
 <?php
 
-namespace mradang\LaravelDingtalk\Events;
+namespace mradang\LaravelDingTalk\Events;
 
 class DepartmentModifyEvent extends Event
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace mradang\LaravelDingtalk\Services;
+namespace mradang\LaravelDingTalk\Services;
 
-use mradang\LaravelDingtalk\Events\DepartmentCreateEvent;
-use mradang\LaravelDingtalk\Events\DepartmentModifyEvent;
-use mradang\LaravelDingtalk\Events\DepartmentRemoveEvent;
-use mradang\LaravelDingtalk\Events\UserAddEvent;
-use mradang\LaravelDingtalk\Events\UserLeaveEvent;
-use mradang\LaravelDingtalk\Events\UserModifyEvent;
+use mradang\LaravelDingTalk\Events\DepartmentCreateEvent;
+use mradang\LaravelDingTalk\Events\DepartmentModifyEvent;
+use mradang\LaravelDingTalk\Events\DepartmentRemoveEvent;
+use mradang\LaravelDingTalk\Events\UserAddEvent;
+use mradang\LaravelDingTalk\Events\UserLeaveEvent;
+use mradang\LaravelDingTalk\Events\UserModifyEvent;
 
 class EventService
 {

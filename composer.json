@@ -15,13 +15,13 @@
     },
     "autoload": {
         "psr-4": {
-            "mradang\\LaravelDingtalk\\": "src"
+            "mradang\\LaravelDingTalk\\": "src"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "mradang\\LaravelDingtalk\\LaravelDingtalkServiceProvider"
+                "mradang\\LaravelDingTalk\\LaravelDingTalkServiceProvider"
             ]
         }
     }

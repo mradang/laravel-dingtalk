@@ -1,6 +1,6 @@
 <?php
 
-namespace mradang\LaravelDingtalk\Services;
+namespace mradang\LaravelDingTalk\Services;
 
 use mradang\LaravelDingTalk\DingTalk;
 
