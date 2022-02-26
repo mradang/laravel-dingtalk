@@ -1,8 +1,8 @@
 <?php
 
-namespace mradang\LaravelDingtalk\DingTalk;
+namespace mradang\LaravelDingtalk\Services;
 
-class Crypto extends DingTalk
+class CryptoService
 {
     private static function getSignature($timestamp, $nonce, $encrypt_msg)
     {
@@ -24,12 +24,12 @@ class Crypto extends DingTalk
 
     private static function suiteKey()
     {
-        return parent::$config['appkey'];
+        return config('dingtalk.appkey');
     }
 
     public static function token()
     {
-        return parent::$config['token'];
+        return config('dingtalk.token');
     }
 
     private static function key()
@@ -39,17 +39,20 @@ class Crypto extends DingTalk
 
     public static function aes_key()
     {
-        return parent::$config['aes_key'];
+        return config('dingtalk.aes_key');
     }
 
     // 加密
     public static function encryptMsg($plain, $timeStamp, $nonce)
     {
         $encrypt = self::encrypt($plain, self::suiteKey());
+
         if ($timeStamp == null) {
             $timeStamp = time();
         }
+
         $signature = self::getSignature($timeStamp, $nonce, $encrypt);
+
         return json_encode([
             'msg_signature' => $signature,
             'encrypt' => $encrypt,
@@ -67,7 +70,13 @@ class Crypto extends DingTalk
         $iv = substr(self::key(), 0, 16);
         // 使用自定义的填充方式对明文进行补位填充
         $text = self::encode($text);
-        return openssl_encrypt($text, 'AES-256-CBC', substr(self::key(), 0, 32), OPENSSL_ZERO_PADDING, $iv);
+        return openssl_encrypt(
+            $text,
+            'AES-256-CBC',
+            substr(self::key(), 0, 32),
+            OPENSSL_ZERO_PADDING,
+            $iv
+        );
     }
 
     private static function encode($text)
@@ -91,17 +100,27 @@ class Crypto extends DingTalk
         if ($timeStamp == null) {
             $timeStamp = time();
         }
+
         $verifySignature = self::getSignature($timeStamp, $nonce, $encrypt);
         if ($verifySignature != $signature) {
             throw new \Exception('Validate signature');
         }
+
         return self::decrypt($encrypt, self::suiteKey());
     }
 
     private static function decrypt($encrypted, $corpid)
     {
         $iv = substr(self::key(), 0, 16);
-        $decrypted = openssl_decrypt($encrypted, 'AES-256-CBC', substr(self::key(), 0, 32), OPENSSL_ZERO_PADDING, $iv);
+
+        $decrypted = openssl_decrypt(
+            $encrypted,
+            'AES-256-CBC',
+            substr(self::key(), 0, 32),
+            OPENSSL_ZERO_PADDING,
+            $iv
+        );
+
         try {
             // 去除补位字符
             $result = self::decode($decrypted);
@@ -116,6 +135,7 @@ class Crypto extends DingTalk
         } catch (\Exception $e) {
             throw new \Exception('decrypt AES error');
         }
+
         if ($from_corpid != $corpid) {
             throw new \Exception('Validate SuiteKey error');
         }

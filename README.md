@@ -59,5 +59,5 @@ $params = [
     ],
 ];
 
-$ret = \DingTalk::post('/topapi/message/corpconversation/asyncsend_v2', $params);
+$ret = DingTalk::post('/topapi/message/corpconversation/asyncsend_v2', $params);
 ```

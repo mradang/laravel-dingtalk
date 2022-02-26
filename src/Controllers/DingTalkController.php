@@ -4,15 +4,15 @@ namespace mradang\LaravelDingtalk\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
-use mradang\LaravelDingtalk\DingTalk\Client as DingTalkClient;
-use mradang\LaravelDingtalk\DingTalk\Crypto;
+use mradang\LaravelDingtalk\Services\CryptoService;
+use mradang\LaravelDingtalk\Services\DingTalkService;
 use mradang\LaravelDingtalk\Services\EventService;
 
 class DingTalkController extends BaseController
 {
     public function config(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'url' => 'required|string',
             'jsApiList' => 'required|string',
         ]);
@@ -21,15 +21,16 @@ class DingTalkController extends BaseController
 
         $allow_sites = explode('|', config('dingtalk.sites'));
         $base_url = explode('?', $request->url)[0];
+
         if (in_array($base_url, $allow_sites)) {
-            return DingTalkClient::config($request->url, $jsApiList);
+            return DingTalkService::config($request->url, $jsApiList);
         }
     }
 
     public function callback(Request $request)
     {
         try {
-            $text = Crypto::decryptMsg(
+            $text = CryptoService::decryptMsg(
                 $request->signature,
                 $request->timestamp,
                 $request->nonce,
@@ -41,7 +42,7 @@ class DingTalkController extends BaseController
             EventService::$eventType($eventMsg);
 
             // 为钉钉服务器返回成功状态
-            return Crypto::encryptMsg('success', $request->timestamp, $request->nonce);
+            return CryptoService::encryptMsg('success', $request->timestamp, $request->nonce);
         } catch (\Exception $e) {
             logger('钉钉回调消息处理失败：' . $e->getMessage());
         }

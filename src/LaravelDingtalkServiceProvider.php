@@ -1,31 +1,12 @@
 <?php
 
-namespace mradang\LaravelDingtalk;
+namespace mradang\LaravelDingTalk;
 
 use Illuminate\Support\ServiceProvider;
-use mradang\LaravelDingtalk\Controllers\DingTalkController;
+use mradang\LaravelDingTalk\Controllers\DingTalkController;
 
-class LaravelDingtalkServiceProvider extends ServiceProvider
+class LaravelDingTalkServiceProvider extends ServiceProvider
 {
-    public function register()
-    {
-        $this->mergeConfigFrom(
-            __DIR__ . '/../config/dingtalk.php',
-            'dingtalk'
-        );
-
-        // 初始化钉钉 SDK
-        \mradang\LaravelDingtalk\DingTalk\DingTalk::init([
-            'corpid' => config('dingtalk.corpid'),
-            'agentid' => config('dingtalk.agentid'),
-            'appkey' => config('dingtalk.appkey'),
-            'appsecret' => config('dingtalk.appsecret'),
-            'aes_key' => config('dingtalk.aes_key'),
-            'token' => config('dingtalk.token'),
-            'proxy' => config('dingtalk.proxy'),
-        ]);
-    }
-
     public function boot()
     {
         if ($this->app->runningInConsole()) {
@@ -36,10 +17,22 @@ class LaravelDingtalkServiceProvider extends ServiceProvider
 
         $this->app->router->group([
             'prefix' => 'api/dingtalk',
-            'namespace' => 'mradang\LaravelDingtalk\Controllers',
+            'namespace' => 'mradang\LaravelDingTalk\Controllers',
         ], function ($router) {
             $router->post('config', [DingTalkController::class, 'config']);
             $router->post('callback', [DingTalkController::class, 'callback']);
+        });
+    }
+
+    public function register()
+    {
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/dingtalk.php',
+            'dingtalk'
+        );
+
+        $this->app->singleton('laravel-dingtalk', function ($app) {
+            return new DingTalkManager($app);
         });
     }
 }

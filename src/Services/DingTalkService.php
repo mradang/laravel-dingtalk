@@ -2,16 +2,35 @@
 
 namespace mradang\LaravelDingtalk\Services;
 
-use mradang\LaravelDingtalk\DingTalk\Client as DingTalkAppClient;
+use mradang\LaravelDingTalk\DingTalk;
 
 class DingTalkService
 {
-    public static function config($url, array $jsApis)
+    public static function config(string $url, array $jsApiList = [])
     {
-        $allow_sites = explode('|', config('dingtalk.sites'));
-        $base_url = explode('?', $url)[0];
-        if (in_array($base_url, $allow_sites)) {
-            return DingTalkAppClient::config($url, $jsApis);
-        }
+        $nonceStr = uniqid();
+        $timestamp = time();
+        $config = [
+            'agentId' => config('dingtalk.agentid'),
+            'corpId' => config('dingtalk.corpid'),
+            'timeStamp' => $timestamp,
+            'nonceStr' => $nonceStr,
+        ];
+        $config['signature'] = self::sign($nonceStr, $timestamp, $url);
+        $config['jsApiList'] = $jsApiList;
+        return json_encode($config);
+    }
+
+    private static function sign($noncestr, $timestamp, $url)
+    {
+        $signArr = [
+            'jsapi_ticket' => DingTalk::getJsapiTicket(),
+            'noncestr' => $noncestr,
+            'timestamp' => $timestamp,
+            'url' => $url,
+        ];
+        ksort($signArr);
+        $signStr = urldecode(http_build_query($signArr));
+        return sha1($signStr);
     }
 }
