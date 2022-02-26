@@ -12,7 +12,7 @@ class DingTalkManager
 {
     protected $app;
 
-    protected $baseUrl = 'https://api.dingtalk.com/';
+    protected $baseUrl = 'https://oapi.dingtalk.com/';
 
     protected $config = [];
 
