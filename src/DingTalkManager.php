@@ -86,7 +86,7 @@ class DingTalkManager
         if ($response->successful() && $response['errcode'] === 0) {
             return $response;
         } else {
-            Log::error('[laravel-dingtalk]' . "[{$url}]" . "[{$method}]" . (string)$response);
+            Log::error('[laravel-dingtalk]' . "[{$method}]" . "[{$url}]" . (string)$response);
         }
     }
 
