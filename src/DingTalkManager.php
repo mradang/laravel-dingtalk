@@ -12,7 +12,7 @@ class DingTalkManager
 {
     protected $app;
 
-    protected $baseUrl = 'https://oapi.dingtalk.com/';
+    protected $baseUrl = 'https://oapi.dingtalk.com';
 
     public function __construct(Application $app)
     {
@@ -58,7 +58,7 @@ class DingTalkManager
         Cache::lock($key, 10)->block(5, function () use ($key, &$token) {
             $token = Cache::get($key);
             if (empty($token)) {
-                $res = $this->request('/get_jsapi_ticket', 'get');
+                $res = $this->get('/get_jsapi_ticket');
                 $token = $res ? $res['ticket'] : '';
                 if ($token) {
                     Cache::put($key, $token, 7200 - 60);
@@ -82,7 +82,9 @@ class DingTalkManager
             'base_uri' => $this->baseUrl,
         ];
 
+        $params = !empty($params) ? $params : null;
         $response = Http::withHeaders($headers)->withOptions($options)->$method($url, $params);
+
         if ($response->successful() && $response['errcode'] === 0) {
             return $response;
         } else {
