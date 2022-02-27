@@ -3,12 +3,15 @@
 封装钉钉接口，处理钉钉事件订阅，触发事件
 
 ## 安装
+
 ```
 composer require mradang/laravel-dingtalk
 ```
 
 ## 配置
+
 1. 添加 .env 环境变量
+
 ```
 DINGTALK_CORPID=dingxxxxxxx
 DINGTALK_AGENTID=xxxxxxxx
@@ -21,22 +24,32 @@ DINGTALK_PROXY=http://addr:port
 ```
 
 ## 添加的路由
+
 - post /api/dingtalk/config
 - post /api/dingtalk/callback
 
 ## 添加的事件
+
 - mradang\LaravelDingTalk\Events\DepartmentCreateEvent
-> string $deptid
+  > string $deptid
 - mradang\LaravelDingTalk\Events\DepartmentModifyEvent
-> string $deptid
+  > string $deptid
 - mradang\LaravelDingTalk\Events\DepartmentRemoveEvent
-> string $deptid
+  > string $deptid
 - mradang\LaravelDingTalk\Events\UserAddEvent
-> string $userid
+  > string $userid
 - mradang\LaravelDingTalk\Events\UserLeaveEvent
-> string $userid
+  > string $userid
 - mradang\LaravelDingTalk\Events\UserModifyEvent
-> string $userid
+  > string $userid
+
+## 添加的命令
+
+1. 刷新部门和用户（触发变更事件）
+
+```bash
+php artisan dingtalk:RefreshDepartmentsAndUsers
+```
 
 ## 钉钉接口调用示例
 
