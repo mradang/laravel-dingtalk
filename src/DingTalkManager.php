@@ -14,27 +14,14 @@ class DingTalkManager
 
     protected $baseUrl = 'https://oapi.dingtalk.com/';
 
-    protected $config = [];
-
     public function __construct(Application $app)
     {
         $this->app = $app;
-
-        // 初始化配置
-        $this->config = [
-            'corpid' => config('dingtalk.corpid'),
-            'agentid' => config('dingtalk.agentid'),
-            'appkey' => config('dingtalk.appkey'),
-            'appsecret' => config('dingtalk.appsecret'),
-            'aes_key' => config('dingtalk.aes_key'),
-            'token' => config('dingtalk.token'),
-            'proxy' => config('dingtalk.proxy'),
-        ];
     }
 
     public function getAccessToken()
     {
-        $key = $this->config['corpid'] . __FUNCTION__;
+        $key = config('dingtalk.corpid') . __FUNCTION__;
         $token = Cache::get($key, '');
 
         if ($token) {
@@ -45,8 +32,8 @@ class DingTalkManager
             $token = Cache::get($key);
             if (empty($token)) {
                 $res = $this->request('/gettoken', 'get', [
-                    'appkey' => $this->config['appkey'],
-                    'appsecret' => $this->config['appsecret'],
+                    'appkey' => config('dingtalk.appkey'),
+                    'appsecret' => config('dingtalk.appsecret'),
                 ], false);
 
                 $token = $res ? $res['access_token'] : '';
@@ -61,7 +48,7 @@ class DingTalkManager
 
     public function getJsapiTicket()
     {
-        $key = $this->config['corpid'] . __FUNCTION__;
+        $key = config('dingtalk.corpid') . __FUNCTION__;
         $token = Cache::get($key, '');
 
         if ($token) {
@@ -91,7 +78,7 @@ class DingTalkManager
         }
 
         $options = [
-            'proxy' => $this->config['proxy'],
+            'proxy' => config('dingtalk.proxy'),
             'base_uri' => $this->baseUrl,
         ];
 
