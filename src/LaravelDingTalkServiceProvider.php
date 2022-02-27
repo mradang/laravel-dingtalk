@@ -3,6 +3,7 @@
 namespace mradang\LaravelDingTalk;
 
 use Illuminate\Support\ServiceProvider;
+use mradang\LaravelDingTalk\Console\RefreshDepartmentsAndUsersCommand;
 use mradang\LaravelDingTalk\Controllers\DingTalkController;
 
 class LaravelDingTalkServiceProvider extends ServiceProvider
@@ -22,6 +23,8 @@ class LaravelDingTalkServiceProvider extends ServiceProvider
             $router->post('config', [DingTalkController::class, 'config']);
             $router->post('callback', [DingTalkController::class, 'callback']);
         });
+
+        $this->registerCommands();
     }
 
     public function register()
@@ -34,5 +37,14 @@ class LaravelDingTalkServiceProvider extends ServiceProvider
         $this->app->singleton('laravel-dingtalk', function ($app) {
             return new DingTalkManager($app);
         });
+    }
+
+    protected function registerCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                RefreshDepartmentsAndUsersCommand::class,
+            ]);
+        }
     }
 }
