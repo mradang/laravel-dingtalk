@@ -98,7 +98,7 @@ class DingTalkService
         if ($userid->count() > 0) {
             $url = '/topapi/message/corpconversation/asyncsend_v2';
             $params = [
-                'agent_id' => env('DINGTALK_AGENTID'),
+                'agent_id' => config('dingtalk.agentid'),
                 'userid_list' => $userid->join(','),
                 'msg' => $msg,
             ];
