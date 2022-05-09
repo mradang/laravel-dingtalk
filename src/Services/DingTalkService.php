@@ -3,7 +3,9 @@
 namespace mradang\LaravelDingTalk\Services;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use mradang\LaravelDingTalk\DingTalk;
+use mradang\LaravelDingTalk\Jobs\SendDingtalkMessageToUsers;
 
 class DingTalkService
 {
@@ -68,5 +70,42 @@ class DingTalkService
         }
 
         return collect($user_ids)->unique()->toArray();
+    }
+
+    /**
+     * 发送消息给钉钉用户
+     *
+     * @param string|array|Collection $userid
+     * @param array $msg
+     * @return void
+     */
+    public static function messageToUser($userid, array $msg)
+    {
+        if (is_string($userid)) {
+            $userid = explode(',', $userid);
+        }
+        if (is_array($userid)) {
+            $userid = collect($userid);
+        }
+        if ($userid instanceof Collection) {
+            $userid = $userid
+                ->filter(function ($item) {
+                    return !empty($item);
+                })
+                ->unique();
+        }
+
+        if ($userid->count() > 0) {
+            $url = '/topapi/message/corpconversation/asyncsend_v2';
+            $params = [
+                'agent_id' => env('DINGTALK_AGENTID'),
+                'userid_list' => $userid->join(','),
+                'msg' => $msg,
+            ];
+            return Arr::get(
+                DingTalk::post($url, $params),
+                'task_id',
+            );
+        }
     }
 }
