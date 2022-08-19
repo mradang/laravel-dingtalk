@@ -86,6 +86,7 @@ class DingTalkManager
         $response = Http::withHeaders($headers)->withOptions($options)->$method($url, $params);
 
         if ($response->successful() && $response['errcode'] === 0) {
+            Log::info("[laravel-dingtalk][$method][$this->baseUrl][$url]" . (string)$response);
             return $response;
         } else {
             Log::error("[laravel-dingtalk][$method][$this->baseUrl][$url]" . (string)$response);
