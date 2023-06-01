@@ -85,11 +85,19 @@ class DingTalkManager
         $params = !empty($params) ? $params : null;
         $response = Http::withHeaders($headers)->withOptions($options)->$method($url, $params);
 
+        $message = sprintf(
+            "[laravel-dingtalk] [%s] [%s] %s %s",
+            $method,
+            $url,
+            json_encode($params, JSON_UNESCAPED_UNICODE),
+            (string)$response,
+        );
+
         if ($response->successful() && $response['errcode'] === 0) {
-            Log::info("[laravel-dingtalk][$method][$this->baseUrl][$url]" . (string)$response);
+            Log::info($message);
             return $response;
         } else {
-            Log::error("[laravel-dingtalk][$method][$this->baseUrl][$url]" . (string)$response);
+            Log::error($message);
         }
     }
 
