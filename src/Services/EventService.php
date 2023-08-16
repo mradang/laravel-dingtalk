@@ -2,6 +2,7 @@
 
 namespace mradang\LaravelDingTalk\Services;
 
+use mradang\LaravelDingTalk\Events\BpmsInstanceChangedEvent;
 use mradang\LaravelDingTalk\Events\DepartmentCreateEvent;
 use mradang\LaravelDingTalk\Events\DepartmentModifyEvent;
 use mradang\LaravelDingTalk\Events\DepartmentRemoveEvent;
@@ -85,5 +86,11 @@ class EventService
                 event(new DepartmentRemoveEvent($id));
             }
         }
+    }
+
+    // 审批实例开始、结束
+    public static function bpms_instance_change(array $eventMsg)
+    {
+        event(new BpmsInstanceChangedEvent($eventMsg));
     }
 }
