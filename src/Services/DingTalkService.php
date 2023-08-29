@@ -4,8 +4,8 @@ namespace mradang\LaravelDingTalk\Services;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
 use mradang\LaravelDingTalk\DingTalk;
-use mradang\LaravelDingTalk\Jobs\SendDingtalkMessageToUsers;
 
 class DingTalkService
 {
@@ -106,6 +106,26 @@ class DingTalkService
                 DingTalk::post($url, $params),
                 'task_id',
             );
+        }
+    }
+
+    /**
+     * 发送消息给webhook
+     */
+    public static function messageToWebhook(string $webhook, string $secret, array $msg)
+    {
+        $timestamp = time() * 1000;
+        $sign = hash_hmac('sha256', $timestamp . "\n" . $secret, $secret, true);
+        $sign = urlencode(base64_encode($sign));
+
+        $url = $webhook . '&timestamp=' . $timestamp . '&sign=' . $sign;
+
+        $res = Http::retry(3, 3000)->post($url, $msg);
+
+        if ($res->failed()) {
+            return false;
+        } else {
+            return $res->json();
         }
     }
 }
