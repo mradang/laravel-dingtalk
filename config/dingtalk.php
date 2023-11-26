@@ -38,7 +38,7 @@ return [
     | 允许 dd.config 签名的站点地址，多个站点用 | 分隔
     |
     */
-    'sites' => env('DINGTALK_ALLOW_SITE', ''),
+    'hosts' => env('DINGTALK_ALLOW_HOSTS', ''),
 
     /*
     |--------------------------------------------------------------------------

@@ -2,8 +2,8 @@
 
 namespace mradang\LaravelDingTalk\Controllers;
 
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 use mradang\LaravelDingTalk\Services\CryptoService;
 use mradang\LaravelDingTalk\Services\DingTalkService;
 use mradang\LaravelDingTalk\Services\EventService;
@@ -19,10 +19,10 @@ class DingTalkController extends BaseController
 
         $jsApiList = explode('|', $request->jsApiList);
 
-        $allow_sites = explode('|', config('dingtalk.sites'));
-        $base_url = explode('?', $request->url)[0];
+        $hosts = explode('|', config('dingtalk.hosts'));
+        $host = parse_url($request->url, PHP_URL_HOST);
 
-        if (in_array($base_url, $allow_sites)) {
+        if (in_array($host, $hosts)) {
             return DingTalkService::config($request->url, $jsApiList);
         }
     }
