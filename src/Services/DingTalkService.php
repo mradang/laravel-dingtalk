@@ -5,6 +5,7 @@ namespace mradang\LaravelDingTalk\Services;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use mradang\LaravelDingTalk\DingTalk;
 
 class DingTalkService
@@ -121,6 +122,14 @@ class DingTalkService
         $url = $webhook . '&timestamp=' . $timestamp . '&sign=' . $sign;
 
         $res = Http::retry(3, 3000)->post($url, $msg);
+
+        $message = sprintf(
+            "[laravel-dingtalk] [messageToWebhook] [%s] [%s] %s",
+            $webhook,
+            json_encode($msg, JSON_UNESCAPED_UNICODE),
+            $res->body(),
+        );
+        Log::info($message);
 
         if ($res->failed()) {
             return false;
