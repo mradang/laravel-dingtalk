@@ -19,12 +19,7 @@ class DingTalkController extends BaseController
 
         $jsApiList = explode('|', $request->jsApiList);
 
-        $hosts = explode('|', config('dingtalk.hosts'));
-        $host = parse_url($request->url, PHP_URL_HOST);
-
-        if (in_array($host, $hosts)) {
-            return DingTalkService::config($request->url, $jsApiList);
-        }
+        return DingTalkService::config($request->url, $jsApiList);
     }
 
     public function callback(Request $request)
