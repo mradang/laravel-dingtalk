@@ -14,13 +14,11 @@ class EventService
 {
     public static function __callStatic($method, $args)
     {
-        logger($method . ':' . var_export($args, true));
+        logger($method.':'.var_export($args, true));
     }
 
     // 检查 URL
-    public static function check_url($event)
-    {
-    }
+    public static function check_url($event) {}
 
     // 通讯录用户增加
     public static function user_add_org($event)

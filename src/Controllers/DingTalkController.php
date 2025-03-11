@@ -39,7 +39,7 @@ class DingTalkController extends BaseController
             // 为钉钉服务器返回成功状态
             return CryptoService::encryptMsg('success', $request->timestamp, $request->nonce);
         } catch (\Exception $e) {
-            logger('钉钉回调消息处理失败：' . $e->getMessage());
+            logger('钉钉回调消息处理失败：'.$e->getMessage());
         }
     }
 }

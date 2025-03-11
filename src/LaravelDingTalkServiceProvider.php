@@ -12,7 +12,7 @@ class LaravelDingTalkServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/dingtalk.php' => config_path('dingtalk.php'),
+                __DIR__.'/../config/dingtalk.php' => config_path('dingtalk.php'),
             ]);
         }
 
@@ -30,7 +30,7 @@ class LaravelDingTalkServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/dingtalk.php',
+            __DIR__.'/../config/dingtalk.php',
             'dingtalk'
         );
 

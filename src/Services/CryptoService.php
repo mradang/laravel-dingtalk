@@ -6,9 +6,10 @@ class CryptoService
 {
     private static function getSignature($timestamp, $nonce, $encrypt_msg)
     {
-        $array = array($encrypt_msg, self::token(), $timestamp, $nonce);
+        $array = [$encrypt_msg, self::token(), $timestamp, $nonce];
         sort($array, SORT_STRING);
         $str = implode($array);
+
         return sha1($str);
     }
 
@@ -19,6 +20,7 @@ class CryptoService
         for ($i = 0; $i < $length; $i++) {
             $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
         }
+
         return $str;
     }
 
@@ -34,7 +36,7 @@ class CryptoService
 
     private static function key()
     {
-        return base64_decode(self::aes_key() . '=');
+        return base64_decode(self::aes_key().'=');
     }
 
     public static function aes_key()
@@ -57,7 +59,7 @@ class CryptoService
             'msg_signature' => $signature,
             'encrypt' => $encrypt,
             'timeStamp' => $timeStamp,
-            'nonce' => $nonce
+            'nonce' => $nonce,
         ]);
     }
 
@@ -65,11 +67,12 @@ class CryptoService
     {
         // 获得16位随机字符串，填充到明文之前
         $random = self::getNonceStr(16);
-        $text = $random . pack("N", strlen($text)) . $text . $corpid;
+        $text = $random.pack('N', strlen($text)).$text.$corpid;
         // 网络字节序
         $iv = substr(self::key(), 0, 16);
         // 使用自定义的填充方式对明文进行补位填充
         $text = self::encode($text);
+
         return openssl_encrypt(
             $text,
             'AES-256-CBC',
@@ -87,11 +90,12 @@ class CryptoService
             $amount_to_pad = 32;
         }
         $pad_chr = chr($amount_to_pad);
-        $tmp = "";
+        $tmp = '';
         for ($index = 0; $index < $amount_to_pad; $index++) {
             $tmp .= $pad_chr;
         }
-        return $text . $tmp;
+
+        return $text.$tmp;
     }
 
     // 解密
@@ -125,10 +129,11 @@ class CryptoService
             // 去除补位字符
             $result = self::decode($decrypted);
             // 去除16位随机字符串,网络字节序和AppId
-            if (strlen($result) < 16)
-                return "";
+            if (strlen($result) < 16) {
+                return '';
+            }
             $content = substr($result, 16, strlen($result));
-            $len_list = unpack("N", substr($content, 0, 4));
+            $len_list = unpack('N', substr($content, 0, 4));
             $xml_len = $len_list[1];
             $xml_content = substr($content, 4, $xml_len);
             $from_corpid = substr($content, $xml_len + 4);
@@ -139,6 +144,7 @@ class CryptoService
         if ($from_corpid != $corpid) {
             throw new \Exception('Validate SuiteKey error');
         }
+
         return $xml_content;
     }
 
@@ -148,6 +154,7 @@ class CryptoService
         if ($pad < 1 || $pad > 32) {
             $pad = 0;
         }
+
         return substr($text, 0, (strlen($text) - $pad));
     }
 }

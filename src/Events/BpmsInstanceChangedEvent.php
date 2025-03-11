@@ -9,7 +9,5 @@ class BpmsInstanceChangedEvent extends Event
      *
      * @return void
      */
-    public function __construct(public array $eventMsg)
-    {
-    }
+    public function __construct(public array $eventMsg) {}
 }

@@ -21,7 +21,7 @@ class DingTalkManager
 
     public function getAccessToken()
     {
-        $key = config('dingtalk.corpid') . __FUNCTION__;
+        $key = config('dingtalk.corpid').__FUNCTION__;
         $token = Cache::get($key, '');
 
         if ($token) {
@@ -48,7 +48,7 @@ class DingTalkManager
 
     public function getJsapiTicket()
     {
-        $key = config('dingtalk.corpid') . __FUNCTION__;
+        $key = config('dingtalk.corpid').__FUNCTION__;
         $token = Cache::get($key, '');
 
         if ($token) {
@@ -74,7 +74,7 @@ class DingTalkManager
         $headers = [];
         if ($withToken) {
             $url .= Str::contains($url, '?') ? '&' : '?';
-            $url .= 'access_token=' . $this->getAccessToken();
+            $url .= 'access_token='.$this->getAccessToken();
         }
 
         $options = [
@@ -82,19 +82,20 @@ class DingTalkManager
             'base_uri' => $this->baseUrl,
         ];
 
-        $params = !empty($params) ? $params : null;
+        $params = ! empty($params) ? $params : null;
         $response = Http::withHeaders($headers)->withOptions($options)->$method($url, $params);
 
         $message = sprintf(
-            "[laravel-dingtalk] [%s] [%s] %s %s",
+            '[laravel-dingtalk] [%s] [%s] %s %s',
             $method,
             $url,
             json_encode($params, JSON_UNESCAPED_UNICODE),
-            (string)$response,
+            (string) $response,
         );
 
         if ($response->successful() && $response['errcode'] === 0) {
             Log::info($message);
+
             return $response;
         } else {
             Log::error($message);

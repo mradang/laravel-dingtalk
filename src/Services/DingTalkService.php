@@ -22,6 +22,7 @@ class DingTalkService
         ];
         $config['signature'] = self::sign($nonceStr, $timestamp, $url);
         $config['jsApiList'] = $jsApiList;
+
         return json_encode($config);
     }
 
@@ -35,6 +36,7 @@ class DingTalkService
         ];
         ksort($signArr);
         $signStr = urldecode(http_build_query($signArr));
+
         return sha1($signStr);
     }
 
@@ -53,6 +55,7 @@ class DingTalkService
         foreach ($sub_ids as $id) {
             $sub_ids = array_merge($sub_ids, self::getDepartmentAllSubIds($id));
         }
+
         return $sub_ids;
     }
 
@@ -76,8 +79,7 @@ class DingTalkService
     /**
      * 发送消息给钉钉用户
      *
-     * @param string|array|Collection $userid
-     * @param array $msg
+     * @param  string|array|Collection  $userid
      * @return void
      */
     public static function messageToUser($userid, array $msg)
@@ -91,7 +93,7 @@ class DingTalkService
         if ($userid instanceof Collection) {
             $userid = $userid
                 ->filter(function ($item) {
-                    return !empty($item);
+                    return ! empty($item);
                 })
                 ->unique();
         }
@@ -103,6 +105,7 @@ class DingTalkService
                 'userid_list' => $userid->join(','),
                 'msg' => $msg,
             ];
+
             return Arr::get(
                 DingTalk::post($url, $params),
                 'task_id',
@@ -116,15 +119,15 @@ class DingTalkService
     public static function messageToWebhook(string $webhook, string $secret, array $msg)
     {
         $timestamp = time() * 1000;
-        $sign = hash_hmac('sha256', $timestamp . "\n" . $secret, $secret, true);
+        $sign = hash_hmac('sha256', $timestamp."\n".$secret, $secret, true);
         $sign = urlencode(base64_encode($sign));
 
-        $url = $webhook . '&timestamp=' . $timestamp . '&sign=' . $sign;
+        $url = $webhook.'&timestamp='.$timestamp.'&sign='.$sign;
 
         $res = Http::retry(3, 3000)->post($url, $msg);
 
         $message = sprintf(
-            "[laravel-dingtalk] [messageToWebhook] [%s] [%s] %s",
+            '[laravel-dingtalk] [messageToWebhook] [%s] [%s] %s',
             $webhook,
             json_encode($msg, JSON_UNESCAPED_UNICODE),
             $res->body(),
