@@ -83,7 +83,7 @@ class DingTalkManager
         ];
 
         $params = ! empty($params) ? $params : null;
-        $response = Http::withHeaders($headers)->withOptions($options)->$method($url, $params);
+        $response = Http::withHeaders($headers)->withOptions($options)->retry(2, 0)->$method($url, $params);
 
         $message = sprintf(
             '[laravel-dingtalk] [%s] [%s] %s %s',
